@@ -1,0 +1,23 @@
+
+services:
+    arches-he-location-extensions-914a3:
+      container_name: arches-he-location-extensions-914a3
+      image: he/arches_he_location_extensions-914a3:base
+      build:
+        args:
+          - "PROJ_NAME=arches_he_location_extensions"
+          - "PROJ_REPO_NAME=arches-he-location-extensions"
+          - "DOCKER_PATH=./arches-he-location-extensions/.ac_arches_he_location_extensions/docker"
+        context: ../..
+        dockerfile: ./arches-he-location-extensions/.ac_arches_he_location_extensions/Dockerfile
+        target: base
+      command: create_project
+      volumes:
+        - ../..:/web_root
+      env_file:
+        - ./docker/env_file.env
+      ports:
+        - 8002:8000
+        - 5678:5678
+      stdin_open: true
+      tty: true

@@ -1,0 +1,92 @@
+
+services:
+    arches-he-location-extensions-914a3:
+      container_name: arches-he-location-extensions-914a3
+      image: he/arches_he_location_extensions-914a3:dev_build
+      build:
+        args:
+          - "PROJ_NAME=arches_he_location_extensions"
+          - "PROJ_REPO_NAME=arches-he-location-extensions"
+          - "DOCKER_PATH=./arches-he-location-extensions/.ac_arches_he_location_extensions/docker"
+        context: ../..
+        dockerfile: ./arches-he-location-extensions/.ac_arches_he_location_extensions/Dockerfile
+        target: dev
+      command: run_arches
+      volumes:
+        - ../../arches:/web_root/arches
+        - ../../arches-he-location-extensions:/web_root/arches_he_location_extensions
+        - ./docker:/web_root/docker
+        - ../../arches-he-location-extensions-package:/web_root/arches_he_location_extensions_package
+        - ../../arches-he-location-extensions-data:/web_root/arches_he_location_extensions_data
+      env_file:
+        - ./docker/env_file.env
+      ports:
+        - 8002:8000
+        - 5678:5678
+      stdin_open: true
+      tty: true
+    
+    ## - possible 
+    #arches-he-location-extensions-bash:
+    #  profiles:
+    #    - livereload
+    #  container_name: arches-he-location-extensions-bash
+    #  image: he/arches_he_location_extensions:dev_build
+    #  command: ["bash"]
+    #  volumes:
+    #    - ../../arches:/web_root/arches
+    #    - ../../arches-he-location-extensions:/web_root/arches_he_location_extensions
+    #    - ./docker:/web_root/docker
+    #    - ../../arches-he-location-extensions-package:/web_root/arches_he_location_extensions_package
+    #    - ../../arches-he-location-extensions-data:/web_root/arches_he_location_extensions_data
+    #  env_file:
+    #    - ./docker/env_file.env
+    #  ports:
+    #    - 35729:35729      
+    #  depends_on:
+    #      - arches-he-location-extensions-914a3
+    #  stdin_open: true
+    #  tty: true
+
+    arches-he-location-extensions-914a3-livereload:
+      profiles:
+        - livereload
+      container_name: arches-he-location-extensions-914a3-livereload
+      image: he/arches_he_location_extensions-914a3:dev_build
+      command: run_livereload
+      volumes:
+        - ../../arches:/web_root/arches
+        - ../../arches-he-location-extensions:/web_root/arches_he_location_extensions
+      env_file:
+        - ./docker/env_file.env
+      ports:
+        - 35729:35729      
+      depends_on:
+          - arches-he-location-extensions-914a3
+      stdin_open: true
+      tty: true
+    
+    arches-he-location-extensions-914a3-webpack:
+      container_name: arches-he-location-extensions-914a3-webpack
+      image: he/arches_he_location_extensions-914a3:dev_build
+      command: run_webpack
+      volumes:
+        - ../../arches:/web_root/arches
+        - ../../arches-he-location-extensions:/web_root/arches_he_location_extensions
+      env_file:
+        - ./docker/env_file.env
+      ports:
+        - 8028:8021
+      depends_on:
+          - arches-he-location-extensions-914a3
+      stdin_open: true
+      tty: true
+
+networks:
+  default:
+    external: true
+    name: arches-he-location-extensions-914a3-network
+
+volumes:
+    arches-log-914a3:
+    arches-static-914a3:
