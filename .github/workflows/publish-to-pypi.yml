@@ -1,6 +1,6 @@
 name: Publish to PyPI on Release
+#This workflow publishes the package to PyPI when a new release is created.
 
-# This workflow publishes the package to PyPI when a new release is created.
 on:
   release:
     types: [created]
@@ -8,25 +8,31 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+
+    # Required for PyPI Trusted Publishing (OIDC)
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install build dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install build twine
+          pip install build
 
       - name: Build the package
         run: python -m build
 
-      - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_PUBLISH_TOKEN }}
-        run: twine upload dist/*
+      - name: Publish package distributions to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        # Remove 'with:' and 'repository-url:' to publish to the live PyPI instead of TestPyPI.
+        with:
+          repository-url: https://test.pypi.org/legacy/
