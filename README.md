@@ -11,6 +11,8 @@ An Arches application extension that provides location-based functionality and e
 
 This Arches application contains extensions that provide location management and location-related functionality for Arches-based heritage inventory systems.
 
+- Generate Related Area Concept From Map function
+
 ## Installing for Development
 
 For development purposes, you can treat this app as a standard Arches project. Either use the instructions for developing an Arches project or use the arches-containers configuration included in this repository.
