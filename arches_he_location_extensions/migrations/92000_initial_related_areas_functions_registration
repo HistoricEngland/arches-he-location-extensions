@@ -1,0 +1,91 @@
+from django.db import migrations, models
+from django.utils.translation import gettext as _
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Permission
+from django.db import connection
+
+
+class Migration(migrations.Migration):
+    """
+    As this is an initial migration for the Bulk HTML From CSV Exporter ETL Module, you need to run the following to reverse the migrations within it:
+    python manage.py migrate arches_he_data_transformation zero
+    For more information read the Django documentation on migrations: https://docs.djangoproject.com/en/4.2/topics/migrations/
+    """
+
+    initial = True
+
+    dependencies = [
+        ("models", "11499_add_editlog_resourceinstance_idx"),
+        ("guardian", "0001_initial"),
+    ]
+
+    def add_functions(apps, schema_editor):
+        Function = apps.get_model("models", "Function")
+
+        if not Function.objects.filter(
+            pk="e2af3585-dd90-4f14-a9bf-50b4b9147059"
+        ).exists():
+
+            Function.objects.update_or_create(
+                functionid="e2af3585-dd90-4f14-a9bf-50b4b9147059",
+                defaults={
+                    "name": "Generate Related Area Concept From Map",
+                    "functiontype": "node",
+                    "modulename": "generate_related_area_concept_from_map_function.py",
+                    "description": "Creates a Related Area record for the location of a drawing saved on a Map where Area Name is a concept",
+                    "defaultconfig": {
+                        "webservice": "",
+                        "geojson_input_node": "",
+                        "relatedarea_name_output_node": "",
+                        "geojson_input_nodegroup": "",
+                        "relatedarea_name_output_nodegroup": "",
+                        "relatedareatype_output_node": "",
+                        "triggering_nodegroups": [],
+                    },
+                    "classname": "GenerateRelatedAreaConceptFromMap",
+                    "component": "views/components/functions/generate_related_area_concept_from_map_function",
+                },
+            )
+        
+        if not Function.objects.filter(
+            pk="e2af3585-dd90-4f14-a9bf-50b4b9147060"
+        ).exists():
+
+            Function.objects.update_or_create(
+                functionid="e2af3585-dd90-4f14-a9bf-50b4b9147060",
+                defaults={
+                    "name": "Generate Related Area From Map",
+                    "functiontype": "node",
+                    "modulename": "generate_related_area_from_map_function.py",
+                    "description": "Creates a Related Area record for the location of a drawing saved on a Map where Area Name is a string",
+                    "defaultconfig": {
+                        "webservice": "",
+                        "geojson_input_node": "",
+                        "relatedarea_name_output_node": "",
+                        "geojson_input_nodegroup": "",
+                        "relatedarea_name_output_nodegroup": "",
+                        "relatedareatype_output_node": "",
+                        "triggering_nodegroups": [],
+                    },
+                    "classname": "GenerateRelatedAreaFromMap",
+                    "component": "views/components/functions/generate_related_area_from_map_function",
+                },
+            )
+
+    def remove_functions(apps, schema_editor):
+        Function = apps.get_model("models", "Function")
+
+        function_ids_to_remove = [
+            "e2af3585-dd90-4f14-a9bf-50b4b9147059",
+            "e2af3585-dd90-4f14-a9bf-50b4b9147060",
+        ]
+
+
+        for fn in Function.objects.filter(
+            pk__in=function_ids_to_remove
+        ):
+            fn.delete()
+
+    operations = [
+        migrations.RunPython(add_functions, remove_functions),
+    ]
