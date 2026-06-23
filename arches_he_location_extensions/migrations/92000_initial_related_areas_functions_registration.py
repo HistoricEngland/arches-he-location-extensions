@@ -7,8 +7,8 @@ from django.db import connection
 
 class Migration(migrations.Migration):
     """
-    As this is an initial migration for the Bulk HTML From CSV Exporter ETL Module, you need to run the following to reverse the migrations within it:
-    python manage.py migrate arches_he_data_transformation zero
+    As this is an initial migration for the Arches HE Location Extensions extension, you need to run the following to reverse the migrations within it:
+    python manage.py migrate arches_he_location_extensions zero
     For more information read the Django documentation on migrations: https://docs.djangoproject.com/en/4.2/topics/migrations/
     """
 
