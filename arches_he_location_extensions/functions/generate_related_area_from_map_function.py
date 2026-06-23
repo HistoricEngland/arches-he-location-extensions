@@ -11,6 +11,7 @@ import json
 from arches_he_location_extensions.geometry_service_backends import (
     GeometryServiceBackend,
 )
+
 # from datetime import datetime
 import requests
 
@@ -40,7 +41,7 @@ class GenerateRelatedAreaFromMap(BaseFunction):
 
     def get(self):
         raise NotImplementedError
-    
+
     def getDomainOptionsDict(self, nodeid):
         """
         Returns configured values for a node in {value: valueid} format.
@@ -57,7 +58,7 @@ class GenerateRelatedAreaFromMap(BaseFunction):
                     options_lookup[value] = valueid
 
         return options_lookup
-    
+
     def mapRelatedAreaTypeLabel(self, webservice_label):
         """
         Maps webservice labels to the Arches Related Area Type labels.
@@ -83,18 +84,17 @@ class GenerateRelatedAreaFromMap(BaseFunction):
 
         return mapping.get(webservice_label.strip(), webservice_label.strip())
 
-
     def save(self, tile, request, context=None):
         """
         Creates Related Area Concept record(s) from the location defined in a tile's GeoJSON node.
         """
-        logger.info("save() method called") 
+        logger.info("save() method called")
         try:
             search_location = self.get_search_location_from_geometry(tile)
 
             if search_location is None:
                 return
-            
+
             returned_locations = GeometryServiceBackend(
                 self.config["webservice"]
             ).get_location_information(self.config["webservice"], search_location)
@@ -120,7 +120,6 @@ class GenerateRelatedAreaFromMap(BaseFunction):
         for k, v in returned_locations.items():
             self.create_related_area_record_tile(k, v, tile)
 
-
     def get_search_location_from_geometry(self, tile):
         """
         Returns the search location as a string of easting and northing comma separated e.g. 123456,123456
@@ -141,13 +140,17 @@ class GenerateRelatedAreaFromMap(BaseFunction):
         geo_js_features = geo_js_features[1:]
 
         for item in geo_js_features:
-            geosgeom_union = geosgeom_union.union(GEOSGeometry(json.dumps(item["geometry"])))
+            geosgeom_union = geosgeom_union.union(
+                GEOSGeometry(json.dumps(item["geometry"]))
+            )
 
         centroid_point = geosgeom_union.envelope.centroid
         centroid_point = GEOSGeometry(centroid_point, srid=srid_lat_long)
         centroid_point.transform(srid_bng_absolute, False)
 
-        easting, northing = map(lambda coord: str(int(coord)).zfill(6), centroid_point.coords)
+        easting, northing = map(
+            lambda coord: str(int(coord)).zfill(6), centroid_point.coords
+        )
         search_location = f"{easting},{northing}"
 
         return search_location
@@ -161,7 +164,9 @@ class GenerateRelatedAreaFromMap(BaseFunction):
     def after_function_save(self, functionxgraph, request):
         raise NotImplementedError
 
-    def create_related_area_record_tile(self, related_area_name, related_area_type, tile):
+    def create_related_area_record_tile(
+        self, related_area_name, related_area_type, tile
+    ):
         """
         Create a Related Area record only if the Area Name and Area Type Name combination doesn't already exist.
         """
@@ -169,9 +174,14 @@ class GenerateRelatedAreaFromMap(BaseFunction):
             related_area_node = self.config["relatedarea_name_output_node"]
             related_area_nodegroup = self.config["relatedarea_name_output_nodegroup"]
             related_area_type_node = self.config["relatedareatype_output_node"]
-            
+
             language = models.Language.objects.get(code=get_language())
-            related_area_name_formatted = {language.code: {"value": related_area_name, "direction": language.default_direction,}}
+            related_area_name_formatted = {
+                language.code: {
+                    "value": related_area_name,
+                    "direction": language.default_direction,
+                }
+            }
 
             related_area_types = self.getDomainOptionsDict(related_area_type_node)
             mapped_related_area_type = self.mapRelatedAreaTypeLabel(related_area_type)
@@ -247,7 +257,9 @@ class GenerateRelatedAreaFromMap(BaseFunction):
         except Exception as ex:
             logger.error(str(ex))
 
-    def create_new_tile(self, tile, nodegroup, nodevalue, nodeuuid, nodetypevalue, nodetypeuuid):
+    def create_new_tile(
+        self, tile, nodegroup, nodevalue, nodeuuid, nodetypevalue, nodetypeuuid
+    ):
         try:
             new_tile = Tile().get_blank_tile_from_nodegroup_id(
                 nodegroup,
@@ -278,7 +290,9 @@ class GenerateRelatedAreaFromMap(BaseFunction):
 
         try:
             return any(
-                t.data[area_name_output_node] == location_value and t.data[area_type_output_node] == location_type_value for t in tiles
+                t.data[area_name_output_node] == location_value
+                and t.data[area_type_output_node] == location_type_value
+                for t in tiles
             )
         except Exception as ex:
             self.logger.error(str(ex))
