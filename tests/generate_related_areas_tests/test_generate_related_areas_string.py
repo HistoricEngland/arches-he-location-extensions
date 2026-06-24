@@ -26,13 +26,14 @@ logger = logging.getLogger(__name__)
 # or if using docker
 # python manage.py test tests.generate_related_areas_tests.test_generate_related_areas_string --settings="tests.test_settings_for_docker"
 
+
 class GenerateRelatedAreasStringTests(TestCase):
 
     test_model_graph_id = "29253694-6ef8-11f1-9b06-3ede97509bf5"
 
     @classmethod
     def setUpTestData(cls):
-        
+
         cls.admin = User.objects.get(username="admin")
 
         # Import ontology once
@@ -43,21 +44,48 @@ class GenerateRelatedAreasStringTests(TestCase):
 
         # Import reference data (concepts and collections) required by getDomainOptionsDict
         for ref_data_file in [
-            os.path.join("tests", "fixtures", "pkg", "reference_data", "concepts", "Administrative Area Type.xml"),
-            os.path.join("tests", "fixtures", "pkg", "reference_data", "concepts", "Administrative Area.xml"),
-            os.path.join("tests", "fixtures", "pkg", "reference_data", "collections", "collections.xml"),
+            os.path.join(
+                "tests",
+                "fixtures",
+                "pkg",
+                "reference_data",
+                "concepts",
+                "Administrative Area Type.xml",
+            ),
+            os.path.join(
+                "tests",
+                "fixtures",
+                "pkg",
+                "reference_data",
+                "concepts",
+                "Administrative Area.xml",
+            ),
+            os.path.join(
+                "tests",
+                "fixtures",
+                "pkg",
+                "reference_data",
+                "collections",
+                "collections.xml",
+            ),
         ]:
-            management.call_command("packages", "-o", "import_reference_data", "-s", ref_data_file)
+            management.call_command(
+                "packages", "-o", "import_reference_data", "-s", ref_data_file
+            )
 
         # Import and publish test graph once
         graph_source = os.path.join(
-            "tests", "fixtures", "pkg", "graphs", "resource_models", "generate_related_area_string_test_model.json"
+            "tests",
+            "fixtures",
+            "pkg",
+            "graphs",
+            "resource_models",
+            "generate_related_area_string_test_model.json",
         )
         management.call_command("packages", "-o", "import_graphs", "-s", graph_source)
 
         graph = Graph.objects.get(graphid=cls.test_model_graph_id)
         graph.publish(user=cls.admin)
-
 
     @classmethod
     def tearDownClass(cls):
@@ -87,7 +115,9 @@ class GenerateRelatedAreasStringTests(TestCase):
         )
         function_instance = GenerateRelatedAreaFromMap()
         function_instance.config = dict(function_x_graph.config)
-        function_instance.config["webservice"] = "https://services.arcgis.com/fake/FeatureServer"
+        function_instance.config["webservice"] = (
+            "https://services.arcgis.com/fake/FeatureServer"
+        )
         return function_instance
 
     def _build_input_tile(self, function_instance):
@@ -172,7 +202,6 @@ class GenerateRelatedAreasStringTests(TestCase):
         self.assertEqual(layer_numbers, [1, 2, 4])
         self.assertEqual(mocked_get.call_count, 1)
 
-
     def test_04_getDomainOptionsDict(self):
         function_x_graph = models.FunctionXGraph.objects.get(
             function_id="e2af3585-dd90-4f14-a9bf-50b4b9147060",
@@ -194,46 +223,40 @@ class GenerateRelatedAreasStringTests(TestCase):
         self.assertIn("County", domain_options)
 
     def test_05_mapRelatedAreaTypeLabel(self):
-        '''
+        """
         Test the mapRelatedAreaTypeLabel function using the mocked webservice data.
         This verifies that labels returned by the ArcGIS service are correctly mapped
         to Arches Related Area Type labels.
-        '''
+        """
         function_instance = GenerateRelatedAreaFromMap()
 
         # Test mapping of webservice labels from the mocked ArcGIS responses
         # EXPECTED_RETURNED_LOCATIONS contains: {"Surrey": "County", "Waverley": "District", "Witley": "Civil Parish or Community"}
-        
+
+        self.assertEqual(function_instance.mapRelatedAreaTypeLabel("County"), "County")
         self.assertEqual(
-            function_instance.mapRelatedAreaTypeLabel("County"),
-            "County"
-        )
-        self.assertEqual(
-            function_instance.mapRelatedAreaTypeLabel("District"),
-            "District"
+            function_instance.mapRelatedAreaTypeLabel("District"), "District"
         )
         self.assertEqual(
             function_instance.mapRelatedAreaTypeLabel("Civil Parish or Community"),
-            "Parish"
+            "Parish",
         )
 
         # Test edge cases
         self.assertIsNone(function_instance.mapRelatedAreaTypeLabel(None))
         self.assertEqual(
-            function_instance.mapRelatedAreaTypeLabel("  County  "),
-            "County"
+            function_instance.mapRelatedAreaTypeLabel("  County  "), "County"
         )
         self.assertEqual(
-            function_instance.mapRelatedAreaTypeLabel("UnknownLabel"),
-            "UnknownLabel"
+            function_instance.mapRelatedAreaTypeLabel("UnknownLabel"), "UnknownLabel"
         )
 
     def test_06_get_search_location_from_geometry(self):
-        '''
+        """
         Test get_search_location_from_geometry with a real tile object containing
         GeoJSON geometry data. Verifies the function correctly transforms coordinates
         from WGS84 (lat/lon) to British National Grid (easting/northing).
-        '''
+        """
         function_instance = GenerateRelatedAreaFromMap()
         function_instance.config = {
             "geojson_input_node": "29254c74-6ef8-11f1-9b06-3ede97509bf5"
@@ -250,16 +273,13 @@ class GenerateRelatedAreasStringTests(TestCase):
                             "type": "Feature",
                             "geometry": {
                                 "type": "Point",
-                                "coordinates": [
-                                    -0.6595919872262357,
-                                    51.12687632194465
-                                ]
+                                "coordinates": [-0.6595919872262357, 51.12687632194465],
                             },
                             "properties": {
                                 "nodeId": "29254c74-6ef8-11f1-9b06-3ede97509bf5"
-                            }
+                            },
                         }
-                    ]
+                    ],
                 }
             }
         )
@@ -269,12 +289,12 @@ class GenerateRelatedAreasStringTests(TestCase):
 
         # Verify location is a string in format "easting,northing"
         self.assertIsInstance(location, str)
-        self.assertRegex(location, r'^\d{6},\d{6}$')
+        self.assertRegex(location, r"^\d{6},\d{6}$")
 
         # The coordinates should have been transformed from WGS84 to British National Grid
         # Original point: [-0.6595919872262357, 51.12687632194465]
         # Expected approximate grid reference: 517000,107000 (approximate values)
-        parts = location.split(',')
+        parts = location.split(",")
         self.assertEqual(len(parts), 2)
         easting = int(parts[0])
         northing = int(parts[1])
@@ -305,20 +325,30 @@ class GenerateRelatedAreasStringTests(TestCase):
         expected_pairs = set()
         for area_name, area_type in EXPECTED_RETURNED_LOCATIONS.items():
             mapped_type_label = function_instance.mapRelatedAreaTypeLabel(area_type)
-            expected_pairs.add((
-                area_name,
-                str(domain_options[mapped_type_label]),
-            ))
+            expected_pairs.add(
+                (
+                    area_name,
+                    str(domain_options[mapped_type_label]),
+                )
+            )
 
         actual_pairs = set()
         for saved_tile in related_area_tiles:
             localized_name = saved_tile.data[related_area_node]
-            localized_values = list(localized_name.values()) if isinstance(localized_name, dict) else []
-            extracted_name = localized_values[0].get("value") if localized_values else None
-            actual_pairs.add((
-                extracted_name,
-                str(saved_tile.data[related_area_type_node]),
-            ))
+            localized_values = (
+                list(localized_name.values())
+                if isinstance(localized_name, dict)
+                else []
+            )
+            extracted_name = (
+                localized_values[0].get("value") if localized_values else None
+            )
+            actual_pairs.add(
+                (
+                    extracted_name,
+                    str(saved_tile.data[related_area_type_node]),
+                )
+            )
 
         self.assertEqual(
             related_area_tiles.count(),
@@ -338,7 +368,9 @@ class GenerateRelatedAreasStringTests(TestCase):
                 function_instance.save(tile=tile, request=None)
 
             first_pass_count = models.TileModel.objects.filter(
-                nodegroup_id=function_instance.config["relatedarea_name_output_nodegroup"],
+                nodegroup_id=function_instance.config[
+                    "relatedarea_name_output_nodegroup"
+                ],
                 resourceinstance_id=tile.resourceinstance_id,
             ).count()
 
@@ -352,5 +384,3 @@ class GenerateRelatedAreasStringTests(TestCase):
 
         self.assertEqual(first_pass_count, len(EXPECTED_RETURNED_LOCATIONS))
         self.assertEqual(second_pass_count, first_pass_count)
-
-    

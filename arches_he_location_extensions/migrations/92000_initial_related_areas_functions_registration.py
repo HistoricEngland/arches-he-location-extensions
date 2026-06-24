@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                     "component": "views/components/functions/generate_related_area_concept_from_map_function",
                 },
             )
-        
+
         if not Function.objects.filter(
             pk="e2af3585-dd90-4f14-a9bf-50b4b9147060"
         ).exists():
@@ -80,10 +80,7 @@ class Migration(migrations.Migration):
             "e2af3585-dd90-4f14-a9bf-50b4b9147060",
         ]
 
-
-        for fn in Function.objects.filter(
-            pk__in=function_ids_to_remove
-        ):
+        for fn in Function.objects.filter(pk__in=function_ids_to_remove):
             fn.delete()
 
     operations = [
