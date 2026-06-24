@@ -38,8 +38,8 @@ class Migration(migrations.Migration):
                     "minZoom": 0,
                     "centerX": 0,
                     "centerY": 0,
-                    "defaultValueType": null,
-                    "defaultValue": null,
+                    "defaultValueType": None,
+                    "defaultValue": None,
                 },
             )
 
