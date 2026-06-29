@@ -401,7 +401,7 @@ class GenerateRelatedAreasConceptTests(TestCase):
                 expected_type_id,
                 f"Concept ID not found for area type '{mapped_type_label}' — check concept fixtures.",
             )
-            
+
             expected_pairs.add((expected_area_id, expected_type_id))
 
         actual_pairs = set()
@@ -506,7 +506,9 @@ class GenerateRelatedAreasConceptTests(TestCase):
             ):
                 function_instance.save(tile=tile, request=None)
 
-        related_area_name_node = function_instance.config["relatedarea_name_output_node"]
+        related_area_name_node = function_instance.config[
+            "relatedarea_name_output_node"
+        ]
         related_area_nodegroup = function_instance.config[
             "relatedarea_name_output_nodegroup"
         ]
