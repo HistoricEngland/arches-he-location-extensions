@@ -388,11 +388,20 @@ class GenerateRelatedAreasConceptTests(TestCase):
 
         expected_pairs = set()
         for area_name, returned_area_type in expected_saved_locations.items():
-            expected_area_id = concept_id_by_label[area_name]
+            expected_area_id = concept_id_by_label.get(area_name)
+            self.assertIsNotNone(
+                expected_area_id,
+                f"Concept ID for area name '{area_name}' not found — check concept fixtures.",
+            )
             mapped_type_label = function_instance.mapRelatedAreaTypeLabel(
                 returned_area_type
             )
-            expected_type_id = str(domain_options[mapped_type_label])
+            expected_type_id = domain_options.get(mapped_type_label)
+            self.assertIsNotNone(
+                expected_type_id,
+                f"Concept ID not found for area type '{mapped_type_label}' — check concept fixtures.",
+            )
+            
             expected_pairs.add((expected_area_id, expected_type_id))
 
         actual_pairs = set()
@@ -405,3 +414,123 @@ class GenerateRelatedAreasConceptTests(TestCase):
             )
 
         self.assertSetEqual(actual_pairs, expected_pairs)
+
+    def test_09_save_twice_does_not_double_related_area_tiles(self):
+        """
+        Calling save() a second time should not duplicate related area tiles — the
+        tile count after the second save must equal the tile count after the first.
+        """
+        function_instance = self._build_function_instance()
+        tile = self._build_input_tile(function_instance)
+        expected_saved_locations = self._get_expected_saved_locations(function_instance)
+
+        with override_settings(ARCGIS_WEB_SERVICE_REFERER="https://example.org"):
+            with mock_arcgis_requests(
+                layer_query_responses=CONCEPT_ARCGIS_LAYER_QUERY_RESPONSES,
+            ):
+                function_instance.save(tile=tile, request=None)
+
+        tiles_after_first_save = models.TileModel.objects.filter(
+            nodegroup_id=function_instance.config["relatedarea_name_output_nodegroup"],
+            resourceinstance_id=tile.resourceinstance_id,
+        ).count()
+
+        self.assertEqual(tiles_after_first_save, len(expected_saved_locations))
+
+        with override_settings(ARCGIS_WEB_SERVICE_REFERER="https://example.org"):
+            with mock_arcgis_requests(
+                layer_query_responses=CONCEPT_ARCGIS_LAYER_QUERY_RESPONSES,
+            ):
+                function_instance.save(tile=tile, request=None)
+
+        tiles_after_second_save = models.TileModel.objects.filter(
+            nodegroup_id=function_instance.config["relatedarea_name_output_nodegroup"],
+            resourceinstance_id=tile.resourceinstance_id,
+        ).count()
+
+        self.assertEqual(tiles_after_second_save, tiles_after_first_save)
+
+    def test_10_save_creates_no_tiles_when_geometry_is_absent(self):
+        """
+        save() should not create any related area tiles when the geometry node
+        value is None (i.e. no geometry has been provided).
+        """
+        function_instance = self._build_function_instance()
+
+        graph = Graph.objects.get(graphid=self.test_model_graph_id)
+        resource = models.ResourceInstance.objects.create(graph=graph)
+        geojson_input_node = function_instance.config["geojson_input_node"]
+
+        tile = SimpleNamespace(
+            resourceinstance_id=resource.resourceinstanceid,
+            parenttile=None,
+            data={geojson_input_node: None},
+        )
+
+        function_instance.save(tile=tile, request=None)
+
+        related_area_tiles = models.TileModel.objects.filter(
+            nodegroup_id=function_instance.config["relatedarea_name_output_nodegroup"],
+            resourceinstance_id=tile.resourceinstance_id,
+        )
+
+        self.assertEqual(related_area_tiles.count(), 0)
+
+    def test_11_save_normalises_city_and_county_of_the_city_of_london(self):
+        """
+        save() should normalise the ArcGIS label "City and County of the City of
+        London" to "City of London" when looking up the related area concept.
+        The saved tile's area-name node must hold the concept ID for "City of London".
+        """
+        function_instance = self._build_function_instance()
+        tile = self._build_input_tile(function_instance)
+
+        city_of_london_layer_response = {
+            "features": [
+                {
+                    "attributes": {
+                        "NAME": "City and County of the City of London",
+                        "DESCRIPTIO": "County",
+                    }
+                }
+            ]
+        }
+
+        with override_settings(ARCGIS_WEB_SERVICE_REFERER="https://example.org"):
+            with mock_arcgis_requests(
+                layer_query_responses=[
+                    city_of_london_layer_response,
+                    {"features": []},
+                    {"features": []},
+                ],
+            ):
+                function_instance.save(tile=tile, request=None)
+
+        related_area_name_node = function_instance.config["relatedarea_name_output_node"]
+        related_area_nodegroup = function_instance.config[
+            "relatedarea_name_output_nodegroup"
+        ]
+
+        related_area_tiles = models.TileModel.objects.filter(
+            nodegroup_id=related_area_nodegroup,
+            resourceinstance_id=tile.resourceinstance_id,
+        )
+        self.assertEqual(related_area_tiles.count(), 1)
+
+        available_concepts = Concept().get(
+            id="48457f95-2b62-410e-9022-38a14db8b9f1",
+            include_subconcepts=True,
+        )
+        concept_lookup = {}
+        function_instance.returnAreaConceptDetails(available_concepts, concept_lookup)
+        city_of_london_concept_id = next(
+            str(concept_id)
+            for concept_id, label in concept_lookup.items()
+            if str(label) == "City of London"
+        )
+
+        saved_tile = related_area_tiles.first()
+        self.assertEqual(
+            str(saved_tile.data[related_area_name_node]),
+            city_of_london_concept_id,
+        )
