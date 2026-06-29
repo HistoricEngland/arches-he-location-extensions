@@ -325,10 +325,15 @@ class GenerateRelatedAreasStringTests(TestCase):
         expected_pairs = set()
         for area_name, area_type in EXPECTED_RETURNED_LOCATIONS.items():
             mapped_type_label = function_instance.mapRelatedAreaTypeLabel(area_type)
+            expected_type_id = domain_options.get(mapped_type_label)
+            self.assertIsNotNone(
+                expected_type_id,
+                f"Concept ID not found for area type '{mapped_type_label}' — check concept fixtures.",
+            )
             expected_pairs.add(
                 (
                     area_name,
-                    str(domain_options[mapped_type_label]),
+                    str(expected_type_id),
                 )
             )
 
