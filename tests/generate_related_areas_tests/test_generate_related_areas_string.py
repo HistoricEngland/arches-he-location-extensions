@@ -348,13 +348,18 @@ class GenerateRelatedAreasStringTests(TestCase):
             extracted_name = (
                 localized_values[0].get("value") if localized_values else None
             )
+            
+            self.assertIsNotNone(
+                extracted_name,
+                f"Failed to extract name from tile data: {localized_name}",
+            )
+            
             actual_pairs.add(
                 (
                     extracted_name,
                     str(saved_tile.data[related_area_type_node]),
                 )
             )
-
         self.assertEqual(
             related_area_tiles.count(),
             len(EXPECTED_RETURNED_LOCATIONS),
