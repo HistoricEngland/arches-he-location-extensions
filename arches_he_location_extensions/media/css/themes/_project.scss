@@ -4,3 +4,25 @@
 //
 // eg:
 // $link-color: red;
+
+// Start - Report card map widget
+.rp-card-section {
+    .rp-report-tile {
+        .dl-horizontal {
+            display: flex;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .rp-card-section {
+        .rp-report-tile {
+            .dl-horizontal {
+                dd {
+                    width: calc(100vw - 110px)!important;
+                }
+            }
+        }
+    }
+}
+// End - Report card map widget
