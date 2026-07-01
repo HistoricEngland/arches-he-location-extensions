@@ -12,6 +12,17 @@
             display: flex;
         }
     }
+    .map-enhanced-container {
+        width: min(calc(100vw - 29rem), calc(100vw - 12rem));
+        max-width: 74vw;
+        .map-enhanced-inner {
+            width: 100%;
+            height: clamp(280px, 44vh, 600px);
+            border: 1px solid #d9dee2;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    }
 }
 
 @media screen and (max-width: 767px) {
