@@ -31,8 +31,5 @@ jobs:
       - name: Build the package
         run: python -m build
 
-      - name: Publish package distributions to TestPyPI
+      - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        # Remove 'with:' and 'repository-url:' to publish to the live PyPI instead of TestPyPI.
-        with:
-          repository-url: https://test.pypi.org/legacy/
