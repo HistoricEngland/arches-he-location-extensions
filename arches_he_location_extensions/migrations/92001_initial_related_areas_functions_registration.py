@@ -12,11 +12,10 @@ class Migration(migrations.Migration):
     For more information read the Django documentation on migrations: https://docs.djangoproject.com/en/4.2/topics/migrations/
     """
 
-    initial = True
+    initial = False
 
     dependencies = [
-        ("models", "11499_add_editlog_resourceinstance_idx"),
-        ("guardian", "0001_initial"),
+        ("arches_he_location_extensions", "92000_extend_map_widget"),
     ]
 
     def add_functions(apps, schema_editor):
