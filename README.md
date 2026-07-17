@@ -63,7 +63,7 @@ Add the following to your `pyproject.toml` dependencies (in the `[project]` sect
 ```toml
 dependencies = [
     "arches==7.6.22",
-    "arches-he-location-extensions @ git+https://github.com/HistoricEngland/arches-he-location-extensions.git@main",
+    "arches-he-location-extensions==1.0.0,
 ]
 ```
 
