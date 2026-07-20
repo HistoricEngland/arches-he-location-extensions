@@ -4,11 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "arches-he-location-extensions"
-readme = "README.md"
-authors = []
+description = "An Arches application extension that provides location-based functionality and enhancements for Arches-based projects. Designed for easy integration with Historic England's Arches projects."
+readme = {file = "README.md", content-type = "text/markdown"}
+version = "1.0.0"
 license = {text = "GNU AGPL3"}
+authors = []
+maintainers = [{name = "Historic England", email = "donotreply@historicengland.org.uk"}]
+keywords = ["arches", "extension", "django", "heritage", "historic-data", "location", "gis"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
@@ -24,9 +28,14 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "arches>=7.6.22,<7.7.0",
+    "arches>=7.6.22,<8.0.0",
 ]
-version = "1.0.0a1"
+
+[project.urls]
+Homepage = "https://github.com/HistoricEngland/arches-he-location-extensions"
+Repository = "https://github.com/HistoricEngland/arches-he-location-extensions.git"
+Issues = "https://github.com/HistoricEngland/arches-he-location-extensions/issues"
+Changelog = "https://github.com/HistoricEngland/arches-he-location-extensions/releases"
 
 [project.optional-dependencies]
 dev = [
@@ -38,5 +47,9 @@ dev = [
     "black==24.4.2",
 ]
 
+[tool.setuptools.packages.find]
+include = ["arches_he_location_extensions*"]
+exclude = ["arches_he_location_extensions.logs*"]
+
 [tool.setuptools]
-packages = ["arches_he_location_extensions"]
+include-package-data = true
