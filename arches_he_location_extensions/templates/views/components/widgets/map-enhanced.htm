@@ -24,22 +24,24 @@
 </dd>
 <!-- /ko -->
 <!-- ko if: hasReportGeometry() -->
-<dd class="map-enhanced-container" data-bind="class: nodeCssClasses">
-    <div class="map-enhanced-inner"
-        data-bind="mapboxgl: {
-                mapOptions: {
-                    style: reportMapStyle,
-                    centerX: centerX,
-                    centerY: centerY,
-                    zoom: zoom,
-                    minZoom: 0,
-                    maxZoom: 20,
-                    pitch: 0,
-                    bearing: 0
+<dd data-bind="class: nodeCssClasses">
+    <div class="map-enhanced-container">
+        <div class="map-enhanced-inner"
+            data-bind="mapboxgl: {
+                    mapOptions: {
+                        style: reportMapStyle,
+                        centerX: centerX,
+                        centerY: centerY,
+                        zoom: zoom,
+                        minZoom: 0,
+                        maxZoom: 20,
+                        pitch: 0,
+                        bearing: 0
+                    },
+                    afterRender: setupReportMap
                 },
-                afterRender: setupReportMap
-            },
-            attr: {'aria-label': label() + ' map report'}">
+                attr: {'aria-label': label() + ' map report'}">
+        </div>
     </div>
 </dd>
 <!-- /ko -->
