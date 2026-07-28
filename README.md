@@ -102,7 +102,15 @@ Run the following command to apply any database migrations required by this app:
 python manage.py migrate
 ```
 
-### 5. Install and Build Front-End Dependencies
+### 5. Include the styling for arches-he-location-extensions
+
+Update `your_project/your_project/media/css/project.scss` with:
+
+```bash
+@import "arches-he-location-extensions";
+```
+
+### 6. Install and Build Front-End Dependencies
 
 From the directory containing your `your_project/package.json`:
 
@@ -112,7 +120,7 @@ npm install
 npm run build_development
 ```
 
-### 6. Start Your Arches Project
+### 7. Start Your Arches Project
 
 ```bash
 python manage.py runserver
