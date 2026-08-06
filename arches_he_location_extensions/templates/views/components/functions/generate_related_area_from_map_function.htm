@@ -7,52 +7,52 @@
         <div class="form-group">
             <div class="relative">
             <div class="alert alert-info" role="alert">
-                <i class="fa fa-info"></i>
+                <i class="fa fa-info" aria-hidden="true"></i>
                 <p>The GeoJSON node and Related Area nodes need to belong to cards that share a parent card.</p>
                 <p>Once a GeoJSON node is selected, the valid nodes for Related Areas will be available in the drop down.</p>
             </div></div>
         </div>
         <div class="form-group">
             <div class="relative">
-                <label class="col-xs-12 control-label widget-input-label" aria-label="GeoJSON Node to get Releated Area information from"> {% trans "GeoJSON Node" %}</label>
+                <label class="col-xs-12 control-label widget-input-label" for="geojson-node-select"> {% trans "GeoJSON Node" %}</label>
             </div>
 
             <div class="col-xs-12">
-                <select data-placeholder="{% trans "Choose a Node." %}"
-                    data-bind="chosen: {width: '100%', disable_search_threshold: 15}, value: geojson_input_node, options: nodesGeoJSON, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true" aria-label="Select Triggering Geometry Node"></select>
+                <select id="geojson-node-select" data-placeholder="{% trans "Choose a Node." %}"
+                    data-bind="chosen: {width: '100%', disable_search_threshold: 15}, value: geojson_input_node, options: nodesGeoJSON, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true"></select>
             </div>
         </div>
 
         <div class="form-group">
             <div class="relative">
-                <label class="col-xs-12 control-label widget-input-label" aria-label="Related Area Name Node"> {% trans "Related Area Name Node" %}</label>
+                <label class="col-xs-12 control-label widget-input-label" for="related-area-name-select"> {% trans "Related Area Name Node" %}</label>
             </div>
 
             <div class="col-xs-12">
-                <select data-placeholder="{% trans "Choose a card." %}"
-                    data-bind="chosen: {width: '100%', disable_search_threshold: 15}, enable: nodesRelatedArea_enabled, value: relatedarea_name_output_node, options: nodesRelatedArea, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true" aria-label="Select Related Area Name Node"></select>
+                <select id="related-area-name-select" data-placeholder="{% trans "Choose a card." %}"
+                    data-bind="chosen: {width: '100%', disable_search_threshold: 15}, enable: nodesRelatedArea_enabled, value: relatedarea_name_output_node, options: nodesRelatedArea, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true"></select>
             </div>
         </div>
 
         <div class="form-group">
             <div class="relative">
-                <label class="col-xs-12 control-label widget-input-label" aria-label="Related Area Type Node"> {% trans "Related Area Type Node" %}</label>
+                <label class="col-xs-12 control-label widget-input-label" for="related-area-type-select"> {% trans "Related Area Type Node" %}</label>
             </div>
 
             <div class="col-xs-12">
-                <select data-placeholder="{% trans "Choose a card." %}"
-                    data-bind="chosen: {width: '100%', disable_search_threshold: 15}, enable: nodesRelatedAreaType_enabled, value: relatedareatype_output_node, options: nodesRelatedAreaType, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true" aria-label="Select Related Area Type Node"></select>
+                <select id="related-area-type-select" data-placeholder="{% trans "Choose a card." %}"
+                    data-bind="chosen: {width: '100%', disable_search_threshold: 15}, enable: nodesRelatedAreaType_enabled, value: relatedareatype_output_node, options: nodesRelatedAreaType, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true"></select>
             </div>
         </div>
 
         <div class="form-group">
             <div class="relative">
-                <label class="col-xs-12 control-label widget-input-label" aria-label="Web Service URL"> {% trans "Web Service URL" %}</label>
+                <label class="col-xs-12 control-label widget-input-label" for="web-service-url-input"> {% trans "Web Service URL" %}</label>
             </div>
 
             <div class="col-xs-12">
-                <input type="text" data-bind="textInput: webservice" class="form-control input-lg"
-                    style="margin-bottom: 5px" aria-label="Enter Web Service URL">
+                <input id="web-service-url-input" type="text" data-bind="textInput: webservice" class="form-control input-lg"
+                    style="margin-bottom: 5px">
             </div>
         </div>
 
