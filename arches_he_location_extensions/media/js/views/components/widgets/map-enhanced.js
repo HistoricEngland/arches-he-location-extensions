@@ -121,6 +121,16 @@ define([
                         }
                     },
                     {
+                        id: 'map-enhanced-polygon-stroke',
+                        type: 'line',
+                        source: 'map-widget-enhanced-report-data',
+                        filter: ['==', '$type', 'Polygon'],
+                        paint: {
+                            'line-color': '#1f6f78',
+                            'line-width': 1.5
+                        }
+                    },
+                    {
                         id: 'map-enhanced-line',
                         type: 'line',
                         source: 'map-widget-enhanced-report-data',
