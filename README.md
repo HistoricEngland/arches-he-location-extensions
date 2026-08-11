@@ -68,7 +68,7 @@ dependencies = [
     "arches==7.6.22",
     "arches-he-location-extensions==1.0.0",
 ]
-```
+
 
 ### 2. Update `your_project/your_project/settings.py`
 
