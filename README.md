@@ -11,6 +11,9 @@ An Arches application extension that provides location-based functionality and e
 
 This Arches application contains extensions that provide location management and location-related functionality for Arches-based heritage inventory systems.
 
+- Generate Related Area Concept From Map function
+- Generate Related Area From Map Function
+
 ## Installing for Development
 
 For development purposes, you can treat this app as a standard Arches project. Either use the instructions for developing an Arches project or use the arches-containers configuration included in this repository.
@@ -63,12 +66,17 @@ Add the following to your `pyproject.toml` dependencies (in the `[project]` sect
 ```toml
 dependencies = [
     "arches==7.6.22",
-    "arches-he-location-extensions==1.0.0,
+    "arches-he-location-extensions==1.0.0",
 ]
-```
+
 
 ### 2. Update `your_project/your_project/settings.py`
 
+Add the following to the appropriate locations:
+
+```python
+    FUNCTION_LOCATIONS.append("arches_he_location_extensions.functions")
+```
 
 Add to `INSTALLED_APPS` and `ARCHES_APPLICATIONS`:
 
@@ -116,9 +124,16 @@ npm run build_development
 
 ```bash
 python manage.py runserver
+
+## Loading package for testing through the UI
+
+To carry out testing through the UI, use the fixtures provided in the unit tests folder within the repo by running the [package load command](https://arches.readthedocs.io/en/stable/installing/projects-and-packages/#loading-a-package)
+
+```bash
+python manage.py packages -o load_package -s tests/fixtures/pkg
 ```
 
-For more information on deploying your Arches project, see the [Arches Deployment Guide](https://arches.readthedocs.io/en/stable/deployment/).
+```
 
 ## License
 
