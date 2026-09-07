@@ -14,9 +14,7 @@ class Migration(migrations.Migration):
 
     initial = False
 
-    dependencies = [
-        ("arches_he_location_extensions", "92000_extend_map_widget"),
-    ]
+    dependencies = []
 
     def add_functions(apps, schema_editor):
         Function = apps.get_model("models", "Function")
