@@ -5,7 +5,7 @@ An Arches application extension that provides location-based functionality and e
 ## Requirements
 
 - Python 3.10+ (Check the [Arches python requirements](https://arches.readthedocs.io/en/stable/installation/) and match your Python version)
-- Arches ==7.6.22
+- Arches >= 7.6.22
 
 ## Contents Overview
 
