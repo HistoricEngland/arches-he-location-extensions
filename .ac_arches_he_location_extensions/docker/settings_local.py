@@ -79,3 +79,5 @@ if USER_SECRET_KEY:
 ARCHES_NAMESPACE_FOR_DATA_EXPORT = f"http://{get_env_variable('PUBLIC_SERVER_PROJECT_NAME')}:{get_env_variable('DJANGO_PORT')}"
 
 PUBLIC_SERVER_ADDRESS = f"http://{get_env_variable('PUBLIC_SERVER_PROJECT_NAME')}:{get_env_variable('DJANGO_PORT')}/"
+
+ARCGIS_WEB_SERVICE_REFERRER = f"{get_env_variable('ARCGIS_WEB_SERVICE_REFERER')}"
