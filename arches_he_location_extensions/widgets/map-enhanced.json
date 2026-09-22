@@ -1,0 +1,24 @@
+{
+    "widgetid": "a5f2c3d4-1e6b-47c9-8a0d-3b9e2f4a1d7c",
+    "name": "map-widget-enhanced",
+    "component": "views/components/widgets/map-enhanced",
+    "datatype": "geojson-feature-collection",
+    "helptext": "Enhanced map widget inheriting from the standard map widget",
+    "defaultconfig": {
+        "basemap": "streets",
+        "geometryTypes": [
+            {"text": "Point", "id": "Point"},
+            {"text": "Line", "id": "Line"},
+            {"text": "Polygon", "id": "Polygon"}
+        ],
+        "overlayConfigs": [],
+        "overlayOpacity": 0.0,
+        "zoom": 0,
+        "maxZoom": 20,
+        "minZoom": 0,
+        "centerX": 0,
+        "centerY": 0,
+        "defaultValueType": null,
+        "defaultValue": null
+    }
+}

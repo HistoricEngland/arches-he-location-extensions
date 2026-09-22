@@ -1,0 +1,37 @@
+// Start - Report card map widget
+.rp-card-section {
+    .map-enhanced-initial {
+        display: contents;
+        padding-top: 10px;
+        padding-right: 0;
+        .map-enhanced-container {
+            width: min(calc(100vw - 29rem), calc(100vw - 12rem));
+            .map-enhanced-inner {
+                width: 100%;
+                height: clamp(280px, 44vh, 600px);
+                border: 1px solid #d9dee2;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .rp-card-section {
+        .rp-report-tile {
+            .dl-horizontal {
+                dd {
+                    width: calc(100vw - 110px)!important;
+                    &.map-enhanced-initial {
+                        .map-enhanced-container {
+                            padding-left: 0;
+                            width: min(100vw - 12rem, 100vw - 12rem);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+// End - Report card map widget

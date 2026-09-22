@@ -5,7 +5,7 @@ An Arches application extension that provides location-based functionality and e
 ## Requirements
 
 - Python 3.10+ (Check the [Arches python requirements](https://arches.readthedocs.io/en/stable/installation/) and match your Python version)
-- Arches ==7.6.22
+- Arches >= 7.6.22
 
 ## Contents Overview
 
@@ -110,7 +110,15 @@ Run the following command to apply any database migrations required by this app:
 python manage.py migrate
 ```
 
-### 5. Install and Build Front-End Dependencies
+### 5. Include the styling for arches-he-location-extensions
+
+Update `your_project/your_project/media/css/project.scss` with:
+
+```bash
+@import "arches-he-location-extensions";
+```
+
+### 6. Install and Build Front-End Dependencies
 
 From the directory containing your `your_project/package.json`:
 
@@ -120,7 +128,7 @@ npm install
 npm run build_development
 ```
 
-### 6. Start Your Arches Project
+### 7. Start Your Arches Project
 
 ```bash
 python manage.py runserver
