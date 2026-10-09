@@ -3,9 +3,9 @@ define(['knockout',
     'knockout-mapping',
     'views/list',
     'viewmodels/function',
-    'bindings/chosen',
+    'bindings/select2-query',
     'templates/views/components/functions/generate_related_area_from_map_function.htm'],
-    function (ko, _, koMapping, ListView, FunctionViewModel, chosen, GenerateRelatedAreaFromMapFunctionTemplate) {
+    function (ko, _, koMapping, ListView, FunctionViewModel, select2Query, GenerateRelatedAreaFromMapFunctionTemplate) {
         return ko.components.register('views/components/functions/generate_related_area_from_map_function', {
             viewModel: function (params) {
                 try {
@@ -71,8 +71,6 @@ define(['knockout',
 
                         }, this);
 
-                        window.setTimeout(function () { $("select[data-bind^=chosen]").trigger("chosen:updated"); }, 100);
-
                     };
 
                     // Subscription.
@@ -137,7 +135,6 @@ define(['knockout',
                     }
 
 
-                    window.setTimeout(function () { $("select[data-bind^=chosen]").trigger("chosen:updated") }, 300);
                 }
                 catch (err) {
                     console.error(err.message);
