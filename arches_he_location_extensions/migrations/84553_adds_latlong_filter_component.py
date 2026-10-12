@@ -51,7 +51,7 @@ def remove_latlong_filter(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ("models", "10804_core_search_filters"),
-        ("migrations", "92001_initial_related_areas_functions_registration"),
+        ("arches_he_location_extensions", "92001_initial_related_areas_functions_registration"),
     ]
 
     operations = [
