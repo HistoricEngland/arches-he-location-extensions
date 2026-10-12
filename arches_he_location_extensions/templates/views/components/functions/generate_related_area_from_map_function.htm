@@ -19,7 +19,7 @@
 
             <div class="col-xs-12">
                 <select id="geojson-node-select" data-placeholder="{% trans "Choose a Node." %}"
-                    data-bind="chosen: {width: '100%', disable_search_threshold: 15}, value: geojson_input_node, options: nodesGeoJSON, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true"></select>
+                    data-bind="attr: {'data-label': $element.labels[0].textContent.trim()}, select2Query: {select2Config: {width: '100%', minimumResultsForSearch: 15, placeholder: $element.getAttribute('data-placeholder'), value: geojson_input_node}}, value: geojson_input_node, options: nodesGeoJSON, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true"></select>
             </div>
         </div>
 
@@ -30,7 +30,7 @@
 
             <div class="col-xs-12">
                 <select id="related-area-name-select" data-placeholder="{% trans "Choose a card." %}"
-                    data-bind="chosen: {width: '100%', disable_search_threshold: 15}, enable: nodesRelatedArea_enabled, value: relatedarea_name_output_node, options: nodesRelatedArea, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true"></select>
+                    data-bind="attr: {'data-label': $element.labels[0].textContent.trim()}, select2Query: {select2Config: {width: '100%', minimumResultsForSearch: 15, placeholder: $element.getAttribute('data-placeholder'), value: relatedarea_name_output_node}}, enable: nodesRelatedArea_enabled, value: relatedarea_name_output_node, options: nodesRelatedArea, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true"></select>
             </div>
         </div>
 
@@ -41,7 +41,7 @@
 
             <div class="col-xs-12">
                 <select id="related-area-type-select" data-placeholder="{% trans "Choose a card." %}"
-                    data-bind="chosen: {width: '100%', disable_search_threshold: 15}, enable: nodesRelatedAreaType_enabled, value: relatedareatype_output_node, options: nodesRelatedAreaType, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true"></select>
+                    data-bind="attr: {'data-label': $element.labels[0].textContent.trim()}, select2Query: {select2Config: {width: '100%', minimumResultsForSearch: 15, placeholder: $element.getAttribute('data-placeholder'), value: relatedareatype_output_node}}, enable: nodesRelatedAreaType_enabled, value: relatedareatype_output_node, options: nodesRelatedAreaType, optionsText: 'name', optionsValue: 'nodeid', valueAllowUnset: true"></select>
             </div>
         </div>
 

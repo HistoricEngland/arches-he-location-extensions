@@ -3,9 +3,9 @@ define(['knockout',
         'underscore',
         'views/list',
         'viewmodels/function',
-        'bindings/chosen',
+        'bindings/select2-query',
         'templates/views/components/functions/generate_related_area_concept_from_map_function.htm'],
-function (ko, koMapping, _, ListView, FunctionViewModel, chosen, generateRelatedAreaConceptTemplate) {
+function (ko, koMapping, _, ListView, FunctionViewModel, select2Query, generateRelatedAreaConceptTemplate) {
     return ko.components.register('views/components/functions/generate_related_area_concept_from_map_function', {
         viewModel: function(params) {
             try{
@@ -76,8 +76,6 @@ function (ko, koMapping, _, ListView, FunctionViewModel, chosen, generateRelated
                         }
 
                     }, this);
-
-                    window.setTimeout(function(){ $("select[data-bind^=chosen]").trigger("chosen:updated"); }, 100);
 
                 }
 
@@ -156,7 +154,6 @@ function (ko, koMapping, _, ListView, FunctionViewModel, chosen, generateRelated
                 }
 
 
-                window.setTimeout(function(){$("select[data-bind^=chosen]").trigger("chosen:updated")}, 300);
             }
             catch(err){
                 console.error(err.message);
