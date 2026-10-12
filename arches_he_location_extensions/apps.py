@@ -4,6 +4,7 @@ from django.conf import settings
 from arches.settings_utils import generate_frontend_configuration
 
 import logging
+
 logger = logging.getLogger(__name__)
 
 
