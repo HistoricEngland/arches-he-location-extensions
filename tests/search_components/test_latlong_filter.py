@@ -9,7 +9,7 @@ from django.test import SimpleTestCase
 
 from arches.app.search.elasticsearch_dsl_builder import Query
 
-filter_module = import_module("mariner_proj.search_components.latlong-filter")
+filter_module = import_module("arches_he_location_extensions.search_components.latlong-filter")
 
 
 class LatLongFilterTests(SimpleTestCase):

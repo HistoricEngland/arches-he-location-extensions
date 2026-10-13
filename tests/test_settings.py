@@ -64,10 +64,15 @@ LOGGING["loggers"]["arches"]["level"] = "ERROR"
 ELASTICSEARCH_PREFIX = "test"
 
 TEST_RUNNER = "arches.test.runner.ArchesTestRunner"
-SILENCED_SYSTEM_CHECKS.append(
-    "arches.W001",  # Cache backend does not support rate-limiting
-)
+SILENCED_SYSTEM_CHECKS.extend([
+        "arches.W001",  # Cache backend does not support rate-limiting
+        "arches.E001",  # Dummy Cache in production check
+])
 
 ELASTICSEARCH_HOSTS = [
-    {"scheme": "http", "host": "localhost", "port": ELASTICSEARCH_HTTP_PORT}
+    {
+        "scheme": "http",
+        "host": os.environ.get("ESHOST"),
+        "port": int(os.environ.get("ESPORT")),
+    }
 ]
