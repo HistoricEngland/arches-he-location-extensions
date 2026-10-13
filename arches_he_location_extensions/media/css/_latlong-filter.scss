@@ -58,6 +58,21 @@
 
         button:last-child {
             margin-left: auto;
-        }
+        }        
+
+        button.btn.btn-primary.btn-active-primary {
+            color: #fff;
+            background-color: #2b4e6d;
+            border-color: #2b4e6d;
+
+            &:hover,
+            &:focus,
+            &:active,
+            &.active {
+                color: #fff;
+                background-color: #1f3b54;
+                border-color: #1f3b54;
+            }
+        }        
     }
 }
