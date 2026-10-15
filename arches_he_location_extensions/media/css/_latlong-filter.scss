@@ -35,6 +35,11 @@
     .latlong-search-info {
         padding: 5px 0;
         font-size: 1.1rem;
+        color: #595959;
+    }
+
+    .close-popup-panel:before {
+        color: #595959;
     }
 
     .latlong-search-info-text {
@@ -43,7 +48,9 @@
 
     .latlong-search-error {
         display: block;
-        color: red;
+        margin-top: 4px;
+        color: #a50000;
+        font-weight: 600;
     }
 
     .latlong-search-error:empty {
