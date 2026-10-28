@@ -381,6 +381,9 @@ EXTRA_EMAIL_CONTEXT = {
     ).strftime("%A, %d %B %Y"),
 }
 
+# Referer header for ArcGIS web service requests. Set this to the domain from which requests will originate.
+ARCGIS_WEB_SERVICE_REFERER = None
+
 # see https://docs.djangoproject.com/en/1.9/topics/i18n/translation/#how-django-discovers-language-preference
 # to see how LocaleMiddleware tries to determine the user's language preference
 # (make sure to check your accept headers as they will override the LANGUAGE_CODE setting!)
