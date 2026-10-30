@@ -1,0 +1,72 @@
+{% load i18n %}
+<div class="latlong-search-container">
+    <div class="close-popup-panel-container latlong-filter-title">
+        <span class="close-popup-panel" tabindex="0" role="button" id="latlong-filter-type-close-btn"
+            data-bind="onEnterkeyClick, onSpaceClick,
+                click: function(){selectedPopup(''); $root.shiftFocus('#latlong-filter-type-open-btn');},
+                attr: {'aria-label': '{% trans "Close Filter by Latitude and Longitude" %}'},
+                text: '{% trans "Filter by Latitude and Longitude" %}'
+        "></span>
+    </div>
+    <hr class="latlong-search-divider">
+
+    <div class="latlong-search-form">
+        <div class="latlong-search-field">
+            <div class="latlong-search-label">
+                <label for="latlong-filter-longitude">{% trans "Longitude (X)" %}</label>
+            </div>
+            <div id="latlong-filter-coordinates-info" class="latlong-search-info">
+                <span class="latlong-search-info-text">{% trans "Enter valid decimal degree value for longitude (-180 to 180)." %}</span>
+            </div>
+            <div class="latlong-search-input-container">
+                <input id="latlong-filter-longitude" class="form-control input-md widget-input latlong-search-input" type="text" inputmode="decimal"
+                    aria-describedby="latlong-filter-longitude-error latlong-filter-coordinates-info" aria-required="true"
+                    data-bind="textInput: filter.longitude, attr: {'aria-invalid': !!longitudeError()}">
+                <span id="latlong-filter-longitude-error" class="latlong-search-error" role="alert"
+                    data-bind="text: longitudeError"></span>
+            </div>
+        </div>
+
+        <div class="latlong-search-field">
+            <div class="latlong-search-label">
+                <label for="latlong-filter-latitude">{% trans "Latitude (Y)" %}</label>
+            </div>
+            <div id="latlong-filter-latitude-info" class="latlong-search-info">
+                <span class="latlong-search-info-text">{% trans "Enter valid decimal degree value for latitude (-90 to 90)." %}</span>
+            </div>
+            <div class="latlong-search-input-container">
+                <input id="latlong-filter-latitude" class="form-control input-md widget-input latlong-search-input" type="text" inputmode="decimal"
+                    aria-describedby="latlong-filter-latitude-error latlong-filter-latitude-info" aria-required="true"
+                    data-bind="textInput: filter.latitude, attr: {'aria-invalid': !!latitudeError()}">
+                <span id="latlong-filter-latitude-error" class="latlong-search-error" role="alert"
+                    data-bind="text: latitudeError"></span>
+            </div>
+        </div>
+
+        <div class="latlong-search-field">
+            <div class="latlong-search-label">
+                <label for="latlong-filter-buffer">{% trans "Buffer Radius (m)" %}</label>
+            </div>
+            <div id="latlong-filter-buffer-info" class="latlong-search-info">
+                <span class="latlong-search-info-text">{% trans "Set a buffer distance in meters to extend the search area." %}</span>
+            </div>
+            <div class="latlong-search-input-container">
+                <input id="latlong-filter-buffer" class="form-control input-md widget-input latlong-search-input" type="text" inputmode="decimal"
+                    aria-describedby="latlong-filter-buffer-error latlong-filter-buffer-info"
+                    data-bind="textInput: filter.buffer, attr: {'aria-invalid': !!bufferError()}">
+                <span id="latlong-filter-buffer-error" class="latlong-search-error" role="alert"
+                    data-bind="text: bufferError"></span>
+            </div>
+        </div>
+
+        <div class="latlong-search-actions">
+            <button class="btn btn-lg btn-primary btn-active-primary" type="button" data-bind="click: function(){ apply(); }">
+                <span>{% trans "Apply" %}</span>
+            </button>
+            <button class="btn btn-lg btn-primary btn-active-primary" type="button" data-bind="click: function(){ clear(); }">
+                <i class="fa fa-close" aria-hidden="true"></i>
+                <span>{% trans "Clear" %}</span>
+            </button>
+        </div>
+    </div>
+</div>
