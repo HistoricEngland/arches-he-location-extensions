@@ -9,7 +9,9 @@ from django.test import SimpleTestCase
 
 from arches.app.search.elasticsearch_dsl_builder import Query
 
-filter_module = import_module("arches_he_location_extensions.search_components.latlong-filter")
+filter_module = import_module(
+    "arches_he_location_extensions.search_components.latlong-filter"
+)
 
 
 class LatLongFilterTests(SimpleTestCase):
@@ -46,7 +48,9 @@ class LatLongFilterTests(SimpleTestCase):
             filters[0]["geo_shape"]["geometries.geom.features.geometry"]["shape"],
             {"type": "Point", "coordinates": [-1.5, 52.25]},
         )
-        self.assertEqual(filters[1], {"terms": {"geometries.nodegroup_id": ["allowed-nodegroup"]}})
+        self.assertEqual(
+            filters[1], {"terms": {"geometries.nodegroup_id": ["allowed-nodegroup"]}}
+        )
         self.assertEqual(filters[2], {"terms": {"geometries.provisional": ["false"]}})
 
     # Decimal radii must reach the buffer helper unchanged in metres.
@@ -98,7 +102,10 @@ class LatLongFilterTests(SimpleTestCase):
             {"latitude": 0},
         )
         for values in invalid_values:
-            with self.subTest(values=values), self.assertLogs(filter_module.logger, level="WARNING"):
+            with (
+                self.subTest(values=values),
+                self.assertLogs(filter_module.logger, level="WARNING"),
+            ):
                 dsl, buffer = self.run_filter(values)
                 self.assertEqual(dsl, {"match_all": {}})
                 buffer.assert_not_called()
@@ -132,7 +139,11 @@ class LatLongTemplateTests(SimpleTestCase):
             input_id = f"latlong-filter-{field}"
             self.assertIn(input_id, parser.labels)
             self.assertIn(input_id, parser.inputs)
-            help_id = "latlong-filter-coordinates-info" if field == "longitude" else f"{input_id}-info"
+            help_id = (
+                "latlong-filter-coordinates-info"
+                if field == "longitude"
+                else f"{input_id}-info"
+            )
             self.assertEqual(
                 parser.inputs[input_id]["aria-describedby"].split(),
                 [f"{input_id}-error", help_id],

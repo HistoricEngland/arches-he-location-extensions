@@ -23,9 +23,7 @@ details = {
 
 class LatLongFilter(BaseSearchFilter):
     def append_dsl(self, search_query_object, **kwargs):
-        latlong_filter = JSONDeserializer().deserialize(
-            kwargs.get("querystring", "{}")
-        )
+        latlong_filter = JSONDeserializer().deserialize(kwargs.get("querystring", "{}"))
 
         try:
             longitude = float(latlong_filter["longitude"])
@@ -79,9 +77,7 @@ class LatLongFilter(BaseSearchFilter):
 
         include_provisional = kwargs.get("include_provisional")
         if include_provisional is False:
-            spatial_query.filter(
-                Terms(field="geometries.provisional", terms=["false"])
-            )
+            spatial_query.filter(Terms(field="geometries.provisional", terms=["false"]))
         elif include_provisional == "only provisional":
             spatial_query.filter(Terms(field="geometries.provisional", terms=["true"]))
 
