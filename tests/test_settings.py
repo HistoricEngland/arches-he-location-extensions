@@ -71,10 +71,8 @@ SILENCED_SYSTEM_CHECKS.extend(
     ]
 )
 
-ELASTICSEARCH_HOSTS = [
-    {
-        "scheme": "http",
-        "host": os.environ.get("ESHOST"),
-        "port": int(os.environ.get("ESPORT")),
-    }
-]
+ELASTICSEARCH_HOSTS = [{
+    "scheme": "http",
+    "host": os.environ.get("ESHOST", "localhost"),
+    "port": int(os.environ.get("ESPORT", ELASTICSEARCH_HTTP_PORT)),
+}]
